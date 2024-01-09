@@ -8,7 +8,7 @@ int main()
 
   while(true)
   {
-
+    glfwPollEvents();
   }
 
 }

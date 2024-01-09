@@ -22,7 +22,7 @@ LBwindow::~LBwindow()
 
 void LBwindow::keyPressed(int key)
 {
-
+  std::cout << key << std::endl;
 }
 
 void LBwindow::keyReleased(int key)
