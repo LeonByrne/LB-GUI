@@ -14,8 +14,6 @@ public:
 	Label(std::string text);
 	~Label();
 
-	virtual Label * copy();
-
 	void draw() override;
 };
 
