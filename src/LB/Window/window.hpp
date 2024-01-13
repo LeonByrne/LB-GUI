@@ -3,22 +3,22 @@
 #include <GLFW/glfw3.h>
 #include "../Input/handlers.hpp"
 #include "../Widgets/Widget.hpp"
+#include "../Container/Container.hpp"
 
 #include <thread>
 #include <vector>
 #include <memory>
 
-class LBwindow : keyhandler, mouseHandler
+class LBwindow : keyhandler, mouseHandler, public Container
 {
 private:
   /* data */
   GLFWwindow *window;
+  float width, height;
 
   std::thread renderThread;
   float fpsTarget = 30;
   bool visible = false;
-
-  std::vector<std::shared_ptr<Widget>> widgets;
 
   void draw();
 
@@ -27,9 +27,6 @@ public:
   ~LBwindow();
 
   void setVisible(bool visible);
-  std::shared_ptr<Widget> addWidget(Widget &widget);
-  std::shared_ptr<Widget> addWidget(Widget *widget);
-  std::shared_ptr<Widget> addWidget(std::shared_ptr<Widget> &widget);
 
   // Overidden functions
   virtual void keyPressed(int key);

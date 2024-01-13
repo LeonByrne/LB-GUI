@@ -10,6 +10,8 @@ LBwindow::LBwindow(/* args */)
   glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 
   window = glfwCreateWindow(800, 800, "todo", nullptr, nullptr);
+  width = 800;
+  height = 800;
 
   glfwSetCursorPosCallback(window, cursor_position_callback);
   glfwSetMouseButtonCallback(window, mouse_button_callback);
@@ -52,46 +54,6 @@ void LBwindow::setVisible(bool visible)
 }
 
 /**
- * @brief Adds a copy of a Widget to the window and returns a pointer to the copy
- * 
- * @param widget The widget you wish to add
- * @return std::shared_ptr<Widget> pointer to the widget for further modification and/or usage
- */
-std::shared_ptr<Widget> LBwindow::addWidget(Widget &widget)
-{
-  std::shared_ptr<Widget> ptr(widget.copy());
-  widgets.push_back(ptr);
-
-  return ptr;
-}
-
-/**
- * @brief Widget must create via new, must not be used elsewhere except through returned value
- * 
- * @param widget The widget you wish to add
- * @return std::shared_ptr<Widget> pointer to the widget for further modification and/or usage
- */
-std::shared_ptr<Widget> LBwindow::addWidget(Widget *widget)
-{
-  std::shared_ptr<Widget> ptr(widget);
-  widgets.push_back(ptr);
-
-  return ptr;
-}
-
-/**
- * @brief Adds widget to the window
- * 
- * @param widget The widget you wish to add
- * @return std::shared_ptr<Widget> pointer to the widget for further modification and/or usage
- */
-std::shared_ptr<Widget> LBwindow::addWidget(std::shared_ptr<Widget> &widget)
-{
-  widgets.push_back(widget);
-  return widget;
-}
-
-/**
  * @brief Draws the window and the widgets within, should not be called by the user at all.
  * 
  */
@@ -110,17 +72,46 @@ void LBwindow::draw()
 		glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Test
-
     glEnable(GL_SCISSOR_TEST);
-    glScissor(100, 100, 100, 100);
-		glClearColor(0.4f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    // In this section we drwa the widgets within
+    // In this section we draw the widgets within
+    int x = 0;
+    int y = 0;
+    int maxHeight = 0;
+    int spacing = 5;
+    std::vector<std::shared_ptr<Widget>> row;
+    for(auto& widget : widgets)
+    {
+      if(x + widget->width > width)
+      {
+        x = 0;
+        y += maxHeight;
+        maxHeight = 0;
+      }
+
+      if(widget->height > maxHeight)
+      {
+        for(auto& prev : widgets)
+        {
+          if(prev->y == y)
+          {
+            prev->y += (widget->height - maxHeight) / 2;
+          }
+        }
+
+        maxHeight = widget->height;
+      }
+
+      widget->x = x;
+      widget->y = y + (maxHeight - widget->height) / 2;
+
+      x += widget->width;
+    }
+
     for(int i = 0; i < widgets.size(); i++)
     {
       widgets[i]->draw();
     }
+
     // std::cout << "drawing" << std::endl;
 
     glfwSwapBuffers(window);
