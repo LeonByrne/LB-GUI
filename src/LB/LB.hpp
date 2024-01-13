@@ -4,6 +4,8 @@
 
 #include "Input/handlers.hpp"
 #include "Window/window.hpp"
+#include "Widgets/Widget.hpp"
+#include "Widgets/Label.hpp"
 
 
 
