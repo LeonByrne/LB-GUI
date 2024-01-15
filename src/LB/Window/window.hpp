@@ -28,6 +28,8 @@ public:
 
   void setVisible(bool visible);
 
+  void resize(int width, int height);
+
   // Overidden functions
   virtual void keyPressed(int key);
   virtual void keyReleased(int key);

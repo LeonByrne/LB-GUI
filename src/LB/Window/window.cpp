@@ -16,6 +16,8 @@ LBwindow::LBwindow(/* args */)
   glfwSetCursorPosCallback(window, cursor_position_callback);
   glfwSetMouseButtonCallback(window, mouse_button_callback);
   glfwSetKeyCallback(window, key_callback);
+  
+  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
   glfwSetWindowUserPointer(window, this);
 }
@@ -51,6 +53,14 @@ void LBwindow::setVisible(bool visible)
     renderThread.join();
     glfwHideWindow(this->window);
   }
+}
+
+void LBwindow::resize(int width, int height)
+{
+  this->width = width;
+  this->height = height;
+
+  std::cout << "width: " << width << ", height: " << height << std::endl;
 }
 
 /**

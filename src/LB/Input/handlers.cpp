@@ -1,5 +1,7 @@
 #include "handlers.hpp"
 
+#include "../Window/window.hpp"
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
   keyhandler *handler = (keyhandler *) glfwGetWindowUserPointer(window);
@@ -72,4 +74,16 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
   }
 
   handler->mouseScroll(xoffset, yoffset);  
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+  LBwindow *handler = (LBwindow *) glfwGetWindowUserPointer(window);
+
+  if(handler == nullptr)
+  {
+    return;
+  }
+
+  handler->resize(width, height);
 }
